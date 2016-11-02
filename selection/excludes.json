@@ -1,0 +1,6 @@
+{
+  "_comment": "Provide a list of directories (.list) you want the software to exclude. Use fully qualified paths.",
+  "list": [
+    "/Users/pieter/Documents/iB_CM/07.pdf"
+  ]
+}
