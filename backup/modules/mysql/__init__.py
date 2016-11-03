@@ -3,6 +3,7 @@ from backup.modules.run import Run
 from os.path import isfile, isdir
 from os import mkdir, remove
 from backup.modules.config import Config
+import logging
 
 
 class MySQLBackup:
@@ -105,6 +106,12 @@ class MySQLBackup:
         return True
 
     def run(self):
+        if self.c.config['BACKUP']['remote_role'] == 'backup':
+            logging.info('Performing MySQL dump of {0} to {1}::{2}.'
+                         .format(self.server_host, self.remote_host, self.destination_path))
+        elif self.c.config['BACKUP']['remote_role'] == 'source':
+            logging.info('Performing backup of {0} on {1} to {2}.'
+                         .format(self.server_host, self.remote_host, self.destination_path))
         if self.c.config['BACKUP']['remote_role'] == 'backup':
             self.dump()
         else:
