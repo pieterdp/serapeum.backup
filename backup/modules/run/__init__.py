@@ -19,12 +19,13 @@ class Run:
             self.__cmd_output += command_output.decode('utf-8')
 
     def run(self, command):
-        proc_result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if proc_result.returncode != 0:
-            self.cmd_output = proc_result.stderr
+        try:
+            proc_output = subprocess.check_output(command)
+        except subprocess.CalledProcessError as e:
+            self.cmd_output = e.output
             raise Exception('Failed to execute {0}: the subprocess returned an error: {1}'
-                            .format(command[0], proc_result.returncode))
-        self.cmd_output = proc_result.stdout
+                            .format(command[0], e.returncode))
+        self.cmd_output = proc_output
         return self.cmd_output
 
     def zip_output(self, command, output_file):
