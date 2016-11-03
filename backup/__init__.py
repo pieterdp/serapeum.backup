@@ -94,7 +94,8 @@ def main():
             m = Mail(server=config.config['MAIL']['smtp_server'], port=config.config['MAIL']['smtp_port'],
                      username=config.config['MAIL']['smtp_username'], password=config.config['MAIL']['smtp_password'])
             m.send(sender=config.config['MAIL']['smtp_username'], recipient=config.config['MAIL']['mail_dest'],
-                   msg_text="{0}\n{1}".format(job.cmd_output, e))
+                   msg_text="{0}\n{1}".format(job.cmd_output, e), subject='The backup job for {0} ({1}) failed.'
+                   .format(job.remote, str(job)))
             failures = True
     if failures is True:
         return False

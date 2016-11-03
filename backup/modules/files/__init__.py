@@ -18,6 +18,7 @@ class Files:
                  excludes_file=None, delete_older_than=None):
         self.remote_role = remote_role
         self.remote_host = remote_host
+        self.remote = self.remote_host
         self.destination_path = destination_path
         self.rdiff = RdiffRole(remote_role=remote_role, sources=sources_file, destination_path=destination_path,
                                remote_user=remote_user, remote_host=remote_host, ssh_key=ssh_key,

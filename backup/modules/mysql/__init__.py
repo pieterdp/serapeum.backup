@@ -17,6 +17,7 @@ class MySQLBackup:
         self.destination_path = backup_destination_path
         self.remote_user = backup_remote_user
         self.remote_host = backup_remote_host
+        self.remote = self.remote_host
         self.backup_ssh = backup_ssh
         self.cmd_output = ''
         if self.c.config['BACKUP']['remote_role'] == 'backup':
