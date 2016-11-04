@@ -34,6 +34,16 @@ The application interacts with your remote backup server using rdiff-backup and 
 
 * `remote_user`, `remote_ssh` and `remote_loc` configure the remote. `remote_loc` contains the address (IP or FQDN) of your remote system. `user` and `ssh` refer to the user you want to log in as and the location of the private ssh key on this system.
 
+#### Multiple remotes
+
+It is possible to define multiple remotes, which will, depending on the setting of `remote_role`, be used to store your backups (_backup_) or be backed up (_source_). The remotes must be in a file in JSON-format with a key called `list`, containing either the IP addresses or the FQDN of every remote.
+
+You must specify the location of the list as the `remote_list` parameter and remove the `remote_loc` key. Only one of those can appear in your configuration file.
+
+If the `remote_role` is _source_, the script will create a subdirectory inside `backup_path` for every remote (using the IP/FQDN as defined in the list), in which the backups will be stored. This should prevent backup mix-ups.
+
+The `remote_`-configuration in the MySQL section has the same functionality and is configured in the same manner.
+
 ### MySQL configuration
 
 Backing up a MySQL installation can be enabled or disabled through the `backup_mysql` setting.
@@ -44,7 +54,7 @@ The application uses the `mysqldump` utility to perform backups of your MySQL (o
 
 * `host`, `username` and `password` must refer to a user that has the necessary rights to execute a dump of the entire MySQL installation. This requires `SELECT`, `LOCK TABLES`, `SHOW VIEW` and `RELOAD` privileges on all databases.
 
-* `remote_user`, `remote_ssh`, `remote_loc` and `backup_path` are used to configure rdiff-backup for the backup of the MySQL dump. They can be the same settings as for the back-up of your files (see _Remote configuration_), but this is not a requirement.
+* `remote_user`, `remote_ssh`, `remote_loc`/`remote_list` and `backup_path` are used to configure rdiff-backup for the backup of the MySQL dump. They can be the same settings as for the back-up of your files (see _Remote configuration_), but this is not a requirement.
 
 ### Email configuration
 
