@@ -28,6 +28,35 @@ class MySQLBackup:
                 mkdir(backup_destination_path)
             self.create_ssh(local_path)
 
+    def check_mysql(self):
+        """
+        Check for a mysql server and mysqldump
+        :return:
+        """
+        mysql_command = [
+            '/usr/bin/ssh',
+            '-i',
+            self.backup_ssh,
+            '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
+            '/usr/bin/mysql -h localhost -V'
+        ]
+        try:
+            Run().run(mysql_command)
+        except Exception:
+            return False
+        mysqldump_command = [
+            '/usr/bin/ssh',
+            '-i',
+            self.backup_ssh,
+            '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
+            '/usr/bin/mysqldump -V'
+        ]
+        try:
+            Run().run(mysqldump_command)
+        except Exception:
+            return False
+        return True
+
     def dump_command(self, shell=False):
         dump_command = [
             self.c.config['SYSTEM']['mysqldump_path'],
@@ -58,7 +87,7 @@ class MySQLBackup:
             self.backup_ssh,
             '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
             '{command} | /bin/gzip > "{path}/dump.sql.gz"'.format(command=' '.join(self.dump_command(shell=True)),
-                                                                path=self.local_path)
+                                                                  path=self.local_path)
         ]
         Run().run(dump_command)
         return True
@@ -107,6 +136,10 @@ class MySQLBackup:
         return True
 
     def run(self):
+        if self.check_mysql() is not True:
+            logging.info('Skipping MySQL dump of {0} on {1}: no mysql server installed or no mysqldump found.'
+                         .format(self.server_host, self.remote_host))
+            return True
         if self.c.config['BACKUP']['remote_role'] == 'backup':
             logging.info('Performing MySQL dump of {0} to {1}::{2}.'
                          .format(self.server_host, self.remote_host, self.destination_path))
@@ -118,3 +151,4 @@ class MySQLBackup:
         else:
             self.remote_dump()
         self.backup()
+        return True
