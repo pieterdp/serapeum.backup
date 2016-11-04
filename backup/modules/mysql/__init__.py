@@ -46,18 +46,6 @@ class MySQLBackup:
             Run().run(mysql_command)
         except SubProcessError:
             return False
-        # Check whether MySQL is running (the above does not check for that)
-        mysqladmin_command = [
-            '/usr/bin/ssh',
-            '-i',
-            self.backup_ssh,
-            '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
-            '/usr/bin/mysqladmin -u root status'
-        ]
-        try:
-            Run().run(mysqladmin_command)
-        except SubProcessError:
-            return False
         # Check for mysqldump
         mysqldump_command = [
             '/usr/bin/ssh',
