@@ -3,6 +3,7 @@ from backup.modules.run import Run
 from os.path import isfile, isdir
 from os import mkdir, remove
 from backup.modules.config import Config
+from backup.modules.error import SubProcessError
 import logging
 
 
@@ -33,6 +34,7 @@ class MySQLBackup:
         Check for a mysql server and mysqldump
         :return:
         """
+        # Check for MySQL
         mysql_command = [
             '/usr/bin/ssh',
             '-i',
@@ -42,8 +44,21 @@ class MySQLBackup:
         ]
         try:
             Run().run(mysql_command)
-        except Exception:
+        except SubProcessError:
             return False
+        # Check whether MySQL is running (the above does not check for that)
+        mysqladmin_command = [
+            '/usr/bin/ssh',
+            '-i',
+            self.backup_ssh,
+            '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
+            '/usr/bin/mysqladmin -u root status'
+        ]
+        try:
+            Run().run(mysqladmin_command)
+        except SubProcessError:
+            return False
+        # Check for mysqldump
         mysqldump_command = [
             '/usr/bin/ssh',
             '-i',
@@ -53,7 +68,7 @@ class MySQLBackup:
         ]
         try:
             Run().run(mysqldump_command)
-        except Exception:
+        except SubProcessError:
             return False
         return True
 

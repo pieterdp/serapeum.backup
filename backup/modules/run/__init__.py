@@ -1,6 +1,7 @@
 import subprocess
 from backup.modules.ds.stack import Stack
 from backup.modules.config import Config
+from backup.modules.error import SubProcessError
 
 
 class Run:
@@ -23,7 +24,7 @@ class Run:
             proc_output = subprocess.check_output(command)
         except subprocess.CalledProcessError as e:
             self.cmd_output = e.output
-            raise Exception('Failed to execute {0}: the subprocess returned an error: {1}'
+            raise SubProcessError('Failed to execute {0}: the subprocess returned an error: {1}'
                             .format(command[0], e.returncode))
         self.cmd_output = proc_output
         return self.cmd_output
@@ -56,7 +57,7 @@ class Run:
                 proc = subprocess.Popen(command, stdout=subprocess.PIPE)
             if proc.returncode != 0:
                 self.cmd_output = proc.stderr
-                raise Exception('Failed to execute {0}: the subprocess returned an error: {1}'
+                raise SubProcessError('Failed to execute {0}: the subprocess returned an error: {1}'
                                 .format(command[0], proc.returncode))
             pipes.add(proc)
             cmd_output.append(proc.communicate()[0])
