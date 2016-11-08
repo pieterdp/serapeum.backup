@@ -1,6 +1,10 @@
 import logging
-from backup.modules.ds.stack import Stack
+from os.path import abspath, dirname, join
 from backup.modules.config import Config
+
+config = Config(abspath(join(dirname(abspath(__file__)), '..', 'config', 'config.ini')))
+
+from backup.modules.ds.stack import Stack
 from backup.modules.files import Files
 from backup.modules.mysql import MySQLBackup
 from backup.modules.mail import Mail
@@ -8,7 +12,6 @@ from backup.modules.remotes import Remotes
 
 
 def job_queue():
-    config = Config(config_file='config/config.ini')
     jobs = Stack()
     if config.config['BACKUP'].get('remote_loc'):
         jobs.add(Files(remote_role=config.config['BACKUP']['remote_role'],

@@ -1,7 +1,3 @@
-from os.path import isfile
-import subprocess
-import json
-from backup.modules.run import Run
 from backup.modules.rdiff.__init__ import RdiffRole
 import logging
 ##

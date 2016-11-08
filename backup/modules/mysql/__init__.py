@@ -2,15 +2,15 @@ from backup.modules.rdiff.__init__ import RdiffRole
 from backup.modules.run import Run
 from os.path import isfile, isdir
 from os import mkdir, remove
-from backup.modules.config import Config
 from backup.modules.error import SubProcessError
+from backup import config
 import logging
 
 
 class MySQLBackup:
     def __init__(self, local_path, server_host, server_user, server_password, backup_destination_path,
                  backup_remote_user, backup_remote_host, backup_ssh):
-        self.c = Config(config_file='config/config.ini')
+        self.c = config
         self.local_path = local_path
         self.server_host = server_host
         self.server_user = server_user

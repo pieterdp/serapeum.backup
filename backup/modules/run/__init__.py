@@ -1,6 +1,6 @@
 import subprocess
 from backup.modules.ds.stack import Stack
-from backup.modules.config import Config
+from backup import config
 from backup.modules.error import SubProcessError
 
 
@@ -8,7 +8,7 @@ class Run:
 
     def __init__(self):
         self.__cmd_output = ''
-        self.c = Config(config_file='config/config.ini')
+        self.c = config
 
     @property
     def cmd_output(self):

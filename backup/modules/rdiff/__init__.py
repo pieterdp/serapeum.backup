@@ -2,13 +2,13 @@ from os.path import isfile, isdir
 from os import mkdir
 import json
 from backup.modules.run import Run
-from backup.modules.config import Config
+from backup import config
 
 
 class RdiffRole:
     def __init__(self, remote_role, sources, destination_path, remote_user, remote_host, ssh_key, excludes=None,
                  delete_older_than=None, sources_is_file=True, excludes_is_file=True):
-        self.c = Config(config_file='config/config.ini')
+        self.c = config
         self.__remote_role = remote_role
         self.__destination_path = destination_path
         self.__remote_user = remote_user

@@ -7,7 +7,7 @@ class Config:
         if config_file is None:
             config_file = 'config/config.ini'
         if not isfile(config_file):
-            raise Exception('Error: failed to parse configuration file: file not found!')
+            raise Exception('Error: failed to parse configuration file: {0} not found!'.format(config_file))
         try:
             self.config = configparser.ConfigParser()
             self.config.read(config_file)
