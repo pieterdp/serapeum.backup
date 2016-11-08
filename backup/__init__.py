@@ -81,7 +81,6 @@ def job_queue():
 
 def main():
     logging.basicConfig(level=logging.INFO)
-    config = Config(config_file='config/config.ini')
     jobs = job_queue()
     failures = False
     while True:
