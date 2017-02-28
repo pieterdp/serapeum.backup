@@ -67,20 +67,21 @@ class MySQLBackup:
             '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
             '/usr/sbin/service mysql status'
         ]
-        try:
-            Run().run(service_command)
-        except SubProcessError:
-            systemd_command = [
-                '/usr/bin/ssh',
-                '-i',
-                self.backup_ssh,
-                '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
-                '/usr/bin/systemctl status mysqld'
-            ]
-            try:
-                Run().run(systemd_command)
-            except SubProcessError:
-                return False
+        # Does not work due to a permissions issue
+#        try:
+#            Run().run(service_command)
+#        except SubProcessError:
+#            systemd_command = [
+#                '/usr/bin/ssh',
+#                '-i',
+#                self.backup_ssh,
+#                '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
+#                '/usr/bin/systemctl status mysqld'
+#            ]
+#            try:
+#                Run().run(systemd_command)
+#            except SubProcessError:
+#                return False
         return True
 
     def dump_command(self, shell=False):
