@@ -58,6 +58,29 @@ class MySQLBackup:
             Run().run(mysqldump_command)
         except SubProcessError:
             return False
+        # Check whether the MySQL server is running
+        # If false, check for systemctl for systemd-systems
+        service_command = [
+            '/usr/bin/ssh',
+            '-i',
+            self.backup_ssh,
+            '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
+            '/usr/sbin/service mysql status'
+        ]
+        try:
+            Run().run(service_command)
+        except SubProcessError:
+            systemd_command = [
+                '/usr/bin/ssh',
+                '-i',
+                self.backup_ssh,
+                '{user}@{host}'.format(user=self.remote_user, host=self.remote_host),
+                '/usr/bin/systemctl status mysqld'
+            ]
+            try:
+                Run().run(systemd_command)
+            except SubProcessError:
+                return False
         return True
 
     def dump_command(self, shell=False):
