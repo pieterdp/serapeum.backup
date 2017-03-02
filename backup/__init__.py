@@ -1,6 +1,7 @@
 import logging
 from os.path import abspath, dirname, join
 from backup.modules.config import Config
+from backup.modules.log import logger
 
 config = Config(abspath(join(dirname(abspath(__file__)), '..', 'config', 'config.ini')))
 
@@ -80,7 +81,6 @@ def job_queue():
 
 
 def main():
-    logging.basicConfig(level=logging.INFO)
     jobs = job_queue()
     failures = False
     while True:
@@ -98,6 +98,7 @@ def main():
             m.send(sender=config.config['MAIL']['smtp_username'], recipient=config.config['MAIL']['mail_dest'],
                    msg_text="{0}\n{1}".format(job.cmd_output, e), subject='The backup job for {0} ({1}) failed.'
                    .format(job.remote, str(job)))
+            logger.exception(job.cmd_output)
             failures = True
     if failures is True:
         return False

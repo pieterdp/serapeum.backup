@@ -1,5 +1,5 @@
 from backup.modules.rdiff.__init__ import RdiffRole
-import logging
+from backup.modules.log import logger
 ##
 # TODO
 # Make destination OK
@@ -24,9 +24,9 @@ class Files:
 
     def run(self):
         if self.remote_role == 'backup':
-            logging.info('Performing backup to {0}::{1}.'.format(self.remote_host, self.destination_path))
+            logger.info('Performing backup to {0}::{1}.'.format(self.remote_host, self.destination_path))
         elif self.remote_role == 'source':
-            logging.info('Performing backup of {0} to {1}.'.format(self.remote_host, self.destination_path))
+            logger.info('Performing backup of {0} to {1}.'.format(self.remote_host, self.destination_path))
         try:
             self.rdiff.run()
         except Exception as e:

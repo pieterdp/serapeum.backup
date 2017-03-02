@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 from backup import main
-import logging
+from backup.modules.log import logger
 
 
 if __name__ == '__main__':
     if main() is not True:
-        logging.error('An error occurred.')
+        logger.error('An error occurred.')
     else:
-        logging.info('Run completed.')
+        logger.info('Run completed.')
