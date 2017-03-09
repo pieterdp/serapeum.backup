@@ -3,8 +3,8 @@ from os.path import abspath, dirname, join, isfile
 from serapeum.backup.modules.config import Config
 from serapeum.backup.modules.log import logger
 
-if isfile('/etc/serapeum/serapeum.ini'):
-    config = Config('/etc/serapeum/serapeum.ini')
+if isfile('/etc/serapeum/backup.ini'):
+    config = Config('/etc/serapeum/backup.ini')
 else:
     config = Config(abspath(join(dirname(abspath(__file__)), '..', 'config', 'config.ini')))
 

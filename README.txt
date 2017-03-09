@@ -1,13 +1,11 @@
-backup
-======
+serapeum.backup
+===============
 
-This script will perform a backup of a list of folders on your server
-and a dump of your MySQL database, and copy them both to a remote backup
-server via rdiff-backup. Failed runs will result in an email being sent.
-
-It can be run in two ways: either to create a backup of a local system
-and store it on a remote server (*case 1*) or create a backup of a
-remote server and store it on a local system (*case 2*).
+*serapeum.backup* will perform a back-up of a list of directories, as
+well as your MySQL database, and store them on the server you're running
+the application on. It is designed to run on your back-up server and
+uses ```rdiff-backup`` <http://www.nongnu.org/rdiff-backup/>`__ to run
+the backup.
 
 Configuration
 -------------
@@ -15,26 +13,32 @@ Configuration
 The application is designed to be used when you have a lot of servers,
 which contain mostly web applications, with assorted databases, and you
 want them all backed up hassle-free to a remote backup server. It is
-meant to be used on your server, not on your backup server.
+meant to be used on your backup server, but it can optionally run from
+your server as well.
 
-All configuration options are in ``config/config.ini``. Copy the
-provided ``example.ini`` file and modify its settings.
+All configuration options are in ``/etc/serapeum/backup.ini``. Copy the
+provided ``example.ini`` file and update it to reflect your personal
+situation.
 
 Role
 ~~~~
 
-The setting ``remote_role`` determines whether the script will run as
-*case 1* or as *case 2*.
+The setting ``remote_role`` determines whether *serapeum.backup* will
+attempt to backup servers to the local system (``source``) or backup the
+local system to some remote server (``backup``). By default, it's set to
+``source``.
 
--  Setting it to ``backup`` will create a backup of the local system
-   (i.e. *case 1*) and use the remote (hence the term ``remote_role``)
-   as its backup location.
+-  Setting it to ``backup`` will create a backup of the local system and
+   use the remote (hence the term ``remote_role``) as its backup
+   location.
 
 -  Setting it to ``source`` will create a backup of the remote system
-   (*case 2*) and store the backup locally.
+   and store the backup locally.
 
 The key ``backup_path`` contains the path the backups will be written
-to, either a local path (*case 2*) or a remote (*case 1*) one. If it is
+to, either a local path (``source``) or a remote (``backup``) one.
+
+Note that when ``remote_role`` is ``backup`` and thus ``backup_path`` is
 a remote path, you do not have to include ``user`` and ``host`` (e.g.
 ``user@host::path``), as this will be generated automatically from the
 remote configuration.
@@ -44,8 +48,8 @@ File selection
 
 ``sources_file`` and ``excludes_file`` refer to the selection of files
 (or directories) you want to backup. Both files must be json-files which
-have a key called ``list``, which contains a list of fully qualified
-directories.
+have a key called ``list``. The ``list`` key contains a list of fully
+qualified directories to backup.
 
 -  ``sources_file`` contains a list of directories or files you want to
    have backed up.
@@ -66,9 +70,10 @@ Remote configuration
 
 The application interacts with your remote backup server using
 rdiff-backup and ssh keys. You must have rdiff-backup installed on the
-remote server, inside ``/usr/bin``. You must also have a user that is
-allowed to connect via ssh, with a key, and has the necessary rights to
-run ``/usr/bin/rdiff-backup`` as ``sudo`` without a password.
+remote server as well as locally, inside ``/usr/bin``. You must also
+have a user that is allowed to connect via ssh, with a key, and has the
+necessary rights to run ``/usr/bin/rdiff-backup`` as ``sudo`` without a
+password.
 
 -  ``remote_user``, ``remote_ssh`` and ``remote_loc`` configure the
    remote. ``remote_loc`` contains the address (IP or FQDN) of your

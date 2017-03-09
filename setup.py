@@ -1,22 +1,22 @@
 from distutils.core import setup
 
 setup(
-    name="Serapeum-backup",
+    name="serapeum.backup",
     version="1.0.3",
     author="Pieter De Praetere",
     author_email="pieter.de.praetere@helptux.be",
     packages=[
-        "backup",
-        "backup.modules.config",
-        "backup.modules.ds",
-        "backup.modules.files",
-        "backup.modules.log",
-        "backup.modules.mail",
-        "backup.modules.mysql",
-        "backup.modules.rdiff",
-        "backup.modules.remotes",
-        "backup.modules.run",
-        "backup.modules"
+        "serapeum.backup",
+        "serapeum.backup.modules.config",
+        "serapeum.backup.modules.ds",
+        "serapeum.backup.modules.files",
+        "serapeum.backup.modules.log",
+        "serapeum.backup.modules.mail",
+        "serapeum.backup.modules.mysql",
+        "serapeum.backup.modules.rdiff",
+        "serapeum.backup.modules.remotes",
+        "serapeum.backup.modules.run",
+        "serapeum.backup.modules"
     ],
     url='',
     license='GPLv3',
