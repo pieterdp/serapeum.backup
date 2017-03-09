@@ -1,15 +1,18 @@
-import logging
-from os.path import abspath, dirname, join
-from backup.modules.config import Config
-from backup.modules.log import logger
+from os.path import abspath, dirname, join, isfile
 
-config = Config(abspath(join(dirname(abspath(__file__)), '..', 'config', 'config.ini')))
+from serapeum.backup.modules.config import Config
+from serapeum.backup.modules.log import logger
 
-from backup.modules.ds.stack import Stack
-from backup.modules.files import Files
-from backup.modules.mysql import MySQLBackup
-from backup.modules.mail import Mail
-from backup.modules.remotes import Remotes
+if isfile('/etc/serapeum/serapeum.ini'):
+    config = Config('/etc/serapeum/serapeum.ini')
+else:
+    config = Config(abspath(join(dirname(abspath(__file__)), '..', 'config', 'config.ini')))
+
+from serapeum.backup.modules.ds.stack import Stack
+from serapeum.backup.modules.files import Files
+from serapeum.backup.modules.mysql import MySQLBackup
+from serapeum.backup.modules.mail import Mail
+from serapeum.backup.modules.remotes import Remotes
 
 
 def job_queue():

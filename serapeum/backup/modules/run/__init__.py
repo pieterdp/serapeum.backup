@@ -1,7 +1,10 @@
 import subprocess
-from backup.modules.ds.stack import Stack
-from backup import config
-from backup.modules.error import SubProcessError
+import tempfile
+
+from serapeum.backup import config
+from serapeum.backup.modules.error import SubProcessError
+
+from serapeum.backup.modules.ds.stack import Stack
 
 
 class Run:
@@ -50,6 +53,7 @@ class Run:
         for command in commands:
             if pipes.peek() is not None:
                 previous = pipes.pop()
+                f_stdout = tempfile.TemporaryFile()
                 proc = subprocess.Popen(command, stdin=previous.stdout, stdout=subprocess.PIPE)
                 previous.stdout.close()
                 pipes.add(previous)

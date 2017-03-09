@@ -1,10 +1,12 @@
-from backup.modules.rdiff.__init__ import RdiffRole
-from backup.modules.run import Run
-from os.path import isfile, isdir
 from os import mkdir, remove
-from backup.modules.error import SubProcessError
-from backup import config
-from backup.modules.log import logger
+from os.path import isdir
+
+from serapeum.backup import config
+from serapeum.backup.modules.error import SubProcessError
+from serapeum.backup.modules.log import logger
+from serapeum.backup.modules.run import Run
+
+from serapeum.backup.modules.rdiff import RdiffRole
 
 
 class MySQLBackup:

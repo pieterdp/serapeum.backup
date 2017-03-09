@@ -1,0 +1,5 @@
+1.0.3
+-----
+
+ - Updated README
+ - Updated location of configuration file

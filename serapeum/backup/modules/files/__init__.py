@@ -1,5 +1,8 @@
-from backup.modules.rdiff.__init__ import RdiffRole
-from backup.modules.log import logger
+from serapeum.backup.modules.log import logger
+
+from serapeum.backup.modules.rdiff import RdiffRole
+
+
 ##
 # TODO
 # Make destination OK

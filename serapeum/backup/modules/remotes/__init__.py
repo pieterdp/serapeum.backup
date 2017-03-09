@@ -1,4 +1,3 @@
-from backup.modules.config import Config
 import json
 from os.path import isfile
 

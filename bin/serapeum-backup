@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-from backup import main
-from backup.modules.log import logger
-
+from serapeum.backup import logger
+from serapeum.backup import main
 
 if __name__ == '__main__':
     if main() is not True:

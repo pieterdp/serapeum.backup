@@ -1,8 +1,10 @@
-from os.path import isfile, isdir
-from os import mkdir
 import json
-from backup.modules.run import Run
-from backup import config
+from os import mkdir
+from os.path import isfile, isdir
+
+from serapeum.backup import config
+
+from serapeum.backup.modules.run import Run
 
 
 class RdiffRole:
