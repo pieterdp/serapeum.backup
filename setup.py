@@ -1,8 +1,8 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name="serapeum.backup",
-    version="1.0.3",
+    version="1.0.6",
     author="Pieter De Praetere",
     author_email="pieter.de.praetere@helptux.be",
     packages=[
@@ -16,18 +16,24 @@ setup(
         "serapeum.backup.modules.rdiff",
         "serapeum.backup.modules.remotes",
         "serapeum.backup.modules.run",
-        "serapeum.backup.modules"
+        "serapeum.backup.modules",
+        "config",
+        "remotes",
+        "selection"
     ],
-    url='',
+    url='https://github.com/pieterdp/serapeum.backup',
     license='GPLv3',
     description="Backup script based on rdiff-backup.",
     long_description=open('README.txt').read(),
     scripts=[
         'bin/serapeum-backup'
     ],
-    data_files=[
-        ('config', ['config/example.ini']),
-        ('remotes', ['remotes/list.json']),
-        ('selection', ['selection/sources.json', 'selection/excludes.json'])
-    ]
+    package_data={
+        'config': ['example.ini'],
+        'remotes': ['list.json'],
+        'selection': [
+            'sources.json',
+            'excludes.json'
+        ]
+    }
 )
