@@ -3,9 +3,9 @@
 _serapeum.backup_ will perform a back-up of a list of directories, as well as your MySQL database, and store them on the server you're running the application on. It is designed to run on your back-up server and uses [`rdiff-backup`](http://www.nongnu.org/rdiff-backup/) to run the backup.
 
 ## Configuration
-The application is designed to be used when you have a lot of servers, which contain mostly web applications, with assorted databases, and you want them all backed up hassle-free to a remote backup server. It is meant to be used on your backup server, but it can optionally run from your server as well.
+The application is designed to be used when you have a lot of servers, which contain mostly web applications, with assorted databases, and you want them all backed up hassle-free to a remote backup server. It is meant to be used on your backup server, but it can optionally run from your server and push to the backup server as well.
 
-All configuration options are in `/etc/serapeum/backup.ini`. Copy the provided `example.ini` file and update it to reflect your personal situation.
+All configuration options are in either in `/etc/serapeum/backup.ini` or a configuration file provided via the `--config` command line switch. Copy the provided `example.ini` file and update it to reflect your personal situation.
 
 ### Role
 
@@ -66,4 +66,16 @@ When a backup job fails, the application sends of an email with the output of rd
 
 ## Usage
 
-This script is designed to run in a cron job without any intervention. All settings must be set in the configuration file, command line parameters are not supported.
+This script is designed to run in a cron job without any intervention. All settings must be set in the configuration file.
+
+Run the application as:
+
+```
+serapeum-backup
+```
+
+Optionally, you can provide a configuration file (in the same format as `/etc/serapeum/backup.ini`) on the command line via the `--config` or `-c` switch. This file will be used instead of the general configuration file.
+
+```
+serapeum-backup --config /etc/serapeum/specific_site.ini
+```

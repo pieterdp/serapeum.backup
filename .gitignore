@@ -94,3 +94,7 @@ ENV/
 selection/excludes_remote_to_local.json
 selection/sources_remote_to_local.json
 config/config_remote_to_local.ini
+config/example_local_to_remote.ini
+selection/example.excludes.json
+selection/example.sources.json
+serapeum-backup

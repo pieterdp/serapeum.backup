@@ -1,3 +1,9 @@
+1.0.7
+-----
+
+ - Added a configurable configuration file location
+ - Updated README
+
 1.0.3
 -----
 

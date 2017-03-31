@@ -1,12 +1,9 @@
-from os.path import abspath, dirname, join, isfile
+from serapeum.backup.modules.config.arguments import Arguments
 
 from serapeum.backup.modules.config import Config
 from serapeum.backup.modules.log import logger
 
-if isfile('/etc/serapeum/backup.ini'):
-    config = Config('/etc/serapeum/backup.ini')
-else:
-    config = Config(abspath(join(dirname(abspath(__file__)), '..', 'config', 'config.ini')))
+config = Config(Arguments().config_file)
 
 from serapeum.backup.modules.ds.stack import Stack
 from serapeum.backup.modules.files import Files
@@ -15,7 +12,7 @@ from serapeum.backup.modules.mail import Mail
 from serapeum.backup.modules.remotes import Remotes
 
 
-def job_queue():
+def job_queue(config):
     jobs = Stack()
     if config.config['BACKUP'].get('remote_loc'):
         jobs.add(Files(remote_role=config.config['BACKUP']['remote_role'],
@@ -84,7 +81,7 @@ def job_queue():
 
 
 def main():
-    jobs = job_queue()
+    jobs = job_queue(config)
     failures = False
     while True:
         job = jobs.pop()
