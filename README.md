@@ -15,9 +15,9 @@ The setting `remote_role` determines whether _serapeum.backup_ will attempt to b
 
 * Setting it to `source` will create a backup of the remote system and store the backup locally.
 
-The key `backup_path` contains the path the backups will be written to, either a local path (`source`) or a remote (`backup`) one.
+The key `path` contains the path the backups will be written to, either a local path (`source`) or a remote (`backup`) one.
 
-Note that when `remote_role` is `backup` and thus `backup_path` is a remote path, you do not have to include `user` and `host` (e.g. `user@host::path`), as this will be generated automatically from the remote configuration.
+Note that when `remote_role` is `backup` and thus `path` is a remote path, you do not have to include `user` and `host` (e.g. `user@host::path`), as this will be generated automatically from the remote configuration.
 
 ### File selection
 
@@ -32,13 +32,13 @@ Your entire path will be replicated inside your backup location. If you specifie
 ### Remote configuration
 The application interacts with your remote backup server using rdiff-backup and ssh keys. You must have rdiff-backup installed on the remote server as well as locally, inside `/usr/bin`. You must also have a user that is allowed to connect via ssh, with a key, and has the necessary rights to run `/usr/bin/rdiff-backup` as `sudo` without a password.
 
-* `remote_user`, `remote_ssh` and `remote_loc` configure the remote. `remote_loc` contains the address (IP or FQDN) of your remote system. `user` and `ssh` refer to the user you want to log in as and the location of the private ssh key on this system.
+* `remote_user`, `remote_ssh` and `remote_loc` configure the remote. `remote_host` contains the address (IP or FQDN) of your remote system. `user` and `ssh` refer to the user you want to log in as and the location of the private ssh key on this system.
 
 #### Multiple remotes
 
 It is possible to define multiple remotes, which will, depending on the setting of `remote_role`, be used to store your backups (_backup_) or be backed up (_source_). The remotes must be in a file in JSON-format with a key called `list`, containing either the IP addresses or the FQDN of every remote.
 
-You must specify the location of the list as the `remote_list` parameter and remove the `remote_loc` key. Only one of those can appear in your configuration file.
+You must specify the location of the list as the `remote_host_list` parameter and remove the `remote_host` key. Only one of those can appear in your configuration file.
 
 If the `remote_role` is _source_, the script will create a subdirectory inside `backup_path` for every remote (using the IP/FQDN as defined in the list), in which the backups will be stored. This should prevent backup mix-ups.
 
