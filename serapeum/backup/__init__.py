@@ -12,71 +12,52 @@ from serapeum.backup.modules.mail import Mail
 from serapeum.backup.modules.remotes import Remotes
 
 
-def job_queue(config):
+def job_queue(app_config):
     jobs = Stack()
-    if config.config['BACKUP'].get('remote_loc'):
-        jobs.add(Files(remote_role=config.config['BACKUP']['remote_role'],
-                       sources_file=config.config['BACKUP']['sources_file'],
-                       destination_path=config.config['BACKUP']['backup_path'],
-                       remote_user=config.config['BACKUP']['remote_user'],
-                       remote_host=config.config['BACKUP']['remote_loc'],
-                       ssh_key=config.config['BACKUP']['remote_ssh'],
-                       excludes_file=config.config['BACKUP']['excludes_file'],
-                       delete_older_than=None))
-    elif config.config['BACKUP'].get('remote_list'):
-        for remote in Remotes(config.config['BACKUP'].get('remote_list')).remotes:
-            if config.config['BACKUP']['remote_role'] == 'source':
-                destination_path = '{0}/{1}'.format(config.config['BACKUP']['backup_path'], remote)
-                jobs.add(Files(remote_role=config.config['BACKUP']['remote_role'],
-                               sources_file=config.config['BACKUP']['sources_file'],
-                               destination_path=destination_path,
-                               remote_user=config.config['BACKUP']['remote_user'],
-                               remote_host=remote,
-                               ssh_key=config.config['BACKUP']['remote_ssh'],
-                               excludes_file=config.config['BACKUP']['excludes_file'],
-                               delete_older_than=None))
-            elif config.config['BACKUP']['remote_role'] == 'backup':
-                jobs.add(Files(remote_role=config.config['BACKUP']['remote_role'],
-                               sources_file=config.config['BACKUP']['sources_file'],
-                               destination_path=config.config['BACKUP']['backup_path'],
-                               remote_user=config.config['BACKUP']['remote_user'],
-                               remote_host=remote,
-                               ssh_key=config.config['BACKUP']['remote_ssh'],
-                               excludes_file=config.config['BACKUP']['excludes_file'],
-                               delete_older_than=None))
-    if config.config['MYSQL'].getboolean('backup_mysql') is True:
-        if config.config['MYSQL'].get('remote_loc'):
+    if app_config.config['BACKUP'].get('remote_host'):
+        jobs.add(Files(
+            backend=app_config.config['BACKUP'].get('backend'),
+            host=app_config.config['BACKUP'].get('remote_host')
+        ))
+    elif app_config.config['BACKUP'].get('remote_host_list'):
+        for remote in Remotes(app_config.config['BACKUP'].get('remote_host_list')).remotes:
+            jobs.add(Files(
+                backend=app_config.config['BACKUP'].get('backend'),
+                host=remote
+            ))
+    if app_config.config['MYSQL'].getboolean('backup_mysql') is True:
+        if app_config.config['MYSQL'].get('remote_loc'):
             jobs.add(
-                MySQLBackup(local_path=config.config['MYSQL']['local_path'], server_host=config.config['MYSQL']['host'],
-                            server_user=config.config['MYSQL']['username'],
-                            server_password=config.config['MYSQL']['password'],
-                            backup_destination_path=config.config['MYSQL']['backup_path'],
-                            backup_remote_host=config.config['MYSQL']['remote_loc'],
-                            backup_remote_user=config.config['MYSQL']['remote_user'],
-                            backup_ssh=config.config['MYSQL']['remote_ssh']))
-        elif config.config['MYSQL'].get('remote_list'):
-            for remote in Remotes(config.config['MYSQL'].get('remote_list')).remotes:
-                if config.config['BACKUP']['remote_role'] == 'source':
-                    destination_path = '{0}/{1}'.format(config.config['MYSQL']['backup_path'], remote)
+                MySQLBackup(local_path=app_config.config['MYSQL']['local_path'], server_host=config.config['MYSQL']['host'],
+                            server_user=app_config.config['MYSQL']['username'],
+                            server_password=app_config.config['MYSQL']['password'],
+                            backup_destination_path=app_config.config['MYSQL']['backup_path'],
+                            backup_remote_host=app_config.config['MYSQL']['remote_loc'],
+                            backup_remote_user=app_config.config['MYSQL']['remote_user'],
+                            backup_ssh=app_config.config['MYSQL']['remote_ssh']))
+        elif app_config.config['MYSQL'].get('remote_list'):
+            for remote in Remotes(app_config.config['MYSQL'].get('remote_list')).remotes:
+                if app_config.config['BACKUP']['remote_role'] == 'source':
+                    destination_path = '{0}/{1}'.format(app_config.config['MYSQL']['backup_path'], remote)
                     jobs.add(
-                        MySQLBackup(local_path=config.config['MYSQL']['local_path'],
-                                    server_host=config.config['MYSQL']['host'],
-                                    server_user=config.config['MYSQL']['username'],
-                                    server_password=config.config['MYSQL']['password'],
+                        MySQLBackup(local_path=app_config.config['MYSQL']['local_path'],
+                                    server_host=app_config.config['MYSQL']['host'],
+                                    server_user=app_config.config['MYSQL']['username'],
+                                    server_password=app_config.config['MYSQL']['password'],
                                     backup_destination_path=destination_path,
                                     backup_remote_host=remote,
-                                    backup_remote_user=config.config['MYSQL']['remote_user'],
-                                    backup_ssh=config.config['MYSQL']['remote_ssh']))
-                elif config.config['BACKUP']['remote_role'] == 'backup':
+                                    backup_remote_user=app_config.config['MYSQL']['remote_user'],
+                                    backup_ssh=app_config.config['MYSQL']['remote_ssh']))
+                elif app_config.config['BACKUP']['remote_role'] == 'backup':
                     jobs.add(
-                        MySQLBackup(local_path=config.config['MYSQL']['local_path'],
-                                    server_host=config.config['MYSQL']['host'],
-                                    server_user=config.config['MYSQL']['username'],
-                                    server_password=config.config['MYSQL']['password'],
-                                    backup_destination_path=config.config['MYSQL']['backup_path'],
+                        MySQLBackup(local_path=app_config.config['MYSQL']['local_path'],
+                                    server_host=app_config.config['MYSQL']['host'],
+                                    server_user=app_config.config['MYSQL']['username'],
+                                    server_password=app_config.config['MYSQL']['password'],
+                                    backup_destination_path=app_config.config['MYSQL']['backup_path'],
                                     backup_remote_host=remote,
-                                    backup_remote_user=config.config['MYSQL']['remote_user'],
-                                    backup_ssh=config.config['MYSQL']['remote_ssh']))
+                                    backup_remote_user=app_config.config['MYSQL']['remote_user'],
+                                    backup_ssh=app_config.config['MYSQL']['remote_ssh']))
     return jobs
 
 
@@ -89,9 +70,6 @@ def main():
             break
         try:
             job.run()
-        # except Exception as e:
-        #    print(job.cmd_output)
-        #    raise e
         except Exception as e:
             m = Mail(server=config.config['MAIL']['smtp_server'], port=config.config['MAIL']['smtp_port'],
                      username=config.config['MAIL']['smtp_username'], password=config.config['MAIL']['smtp_password'])

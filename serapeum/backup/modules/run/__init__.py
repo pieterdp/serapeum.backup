@@ -23,9 +23,9 @@ class Run:
         if command_output is not None:
             self.__cmd_output += command_output.decode('utf-8')
 
-    def run(self, command):
+    def run(self, command, env=None):
         try:
-            proc_output = subprocess.check_output(command)
+            proc_output = subprocess.check_output(command, env=env)
         except subprocess.CalledProcessError as e:
             self.cmd_output = e.output
             raise SubProcessError('Failed to execute {0}: the subprocess returned an error: {1}'
@@ -48,18 +48,18 @@ class Run:
         self.cmd_output = gzip.communicate()[0]
         return self.cmd_output
 
-    def pipe(self, commands):
+    def pipe(self, commands, env=None):
         pipes = Stack()
         cmd_output = []
         for command in commands:
             if pipes.peek() is not None:
                 previous = pipes.pop()
                 f_stdout = tempfile.TemporaryFile()
-                proc = subprocess.Popen(command, stdin=previous.stdout, stdout=subprocess.PIPE)
+                proc = subprocess.Popen(command, stdin=previous.stdout, stdout=subprocess.PIPE, env=env)
                 previous.stdout.close()
                 pipes.add(previous)
             else:
-                proc = subprocess.Popen(command, stdout=subprocess.PIPE)
+                proc = subprocess.Popen(command, stdout=subprocess.PIPE, env=env)
             if proc.returncode != 0:
                 self.cmd_output = proc.stderr
                 raise SubProcessError('Failed to execute {0}: the subprocess returned an error: {1}'
