@@ -1,3 +1,9 @@
+2.0.0.a1
+-----
+
+ - Added experimental support for multiple backends
+
+
 1.0.7
 -----
 

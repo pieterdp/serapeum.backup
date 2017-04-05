@@ -36,11 +36,11 @@ local system to some remote server (``backup``). By default, it's set to
 -  Setting it to ``source`` will create a backup of the remote system
    and store the backup locally.
 
-The key ``backup_path`` contains the path the backups will be written
-to, either a local path (``source``) or a remote (``backup``) one.
+The key ``path`` contains the path the backups will be written to,
+either a local path (``source``) or a remote (``backup``) one.
 
-Note that when ``remote_role`` is ``backup`` and thus ``backup_path`` is
-a remote path, you do not have to include ``user`` and ``host`` (e.g.
+Note that when ``remote_role`` is ``backup`` and thus ``path`` is a
+remote path, you do not have to include ``user`` and ``host`` (e.g.
 ``user@host::path``), as this will be generated automatically from the
 remote configuration.
 
@@ -77,7 +77,7 @@ necessary rights to run ``/usr/bin/rdiff-backup`` as ``sudo`` without a
 password.
 
 -  ``remote_user``, ``remote_ssh`` and ``remote_loc`` configure the
-   remote. ``remote_loc`` contains the address (IP or FQDN) of your
+   remote. ``remote_host`` contains the address (IP or FQDN) of your
    remote system. ``user`` and ``ssh`` refer to the user you want to log
    in as and the location of the private ssh key on this system.
 
@@ -90,8 +90,8 @@ be backed up (*source*). The remotes must be in a file in JSON-format
 with a key called ``list``, containing either the IP addresses or the
 FQDN of every remote.
 
-You must specify the location of the list as the ``remote_list``
-parameter and remove the ``remote_loc`` key. Only one of those can
+You must specify the location of the list as the ``remote_host_list``
+parameter and remove the ``remote_host`` key. Only one of those can
 appear in your configuration file.
 
 If the ``remote_role`` is *source*, the script will create a

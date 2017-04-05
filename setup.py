@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="serapeum.backup",
-    version="1.0.7",
+    version="2.0.0.a1",
     author="Pieter De Praetere",
     author_email="pieter.de.praetere@helptux.be",
     packages=[
@@ -13,7 +13,7 @@ setup(
         "serapeum.backup.modules.log",
         "serapeum.backup.modules.mail",
         "serapeum.backup.modules.mysql",
-        "serapeum.backup.modules.rdiff",
+        "serapeum.backup.modules.backends",
         "serapeum.backup.modules.remotes",
         "serapeum.backup.modules.run",
         "serapeum.backup.modules",
