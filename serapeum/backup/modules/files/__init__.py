@@ -19,3 +19,7 @@ class Files:
 
     def run(self):
         return self.backend.run()
+
+    @property
+    def host(self):
+        return self.backend.host

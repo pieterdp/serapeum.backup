@@ -40,3 +40,10 @@ class Backend:
             raise e
         self.cmd_output = self.backend.cmd_output
         return True
+
+    @property
+    def host(self):
+        if hasattr(self.backend, 'host'):
+            return self.backend.host
+        else:
+            return None

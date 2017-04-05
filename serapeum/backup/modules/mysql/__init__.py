@@ -6,7 +6,7 @@ from serapeum.backup.modules.error import SubProcessError
 from serapeum.backup.modules.log import logger
 from serapeum.backup.modules.run import Run
 
-from serapeum.backup.modules.rdiff import RdiffRole
+from serapeum.backup.modules.backends.rdiff import RdiffRole
 
 
 class MySQLBackup:

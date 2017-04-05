@@ -15,6 +15,7 @@ class RdiffRole(GenericRole):
             self.__destination_path = '{0}/{1}'.format(host, path)
         self.__remote_user = remote_user
         self.__remote_host = host
+        self.host = host
         self.sources = self.p__parse_sources_file(sources_file)
         self.excludes = []
         if excludes_file:
